@@ -1,0 +1,11 @@
+node_modules/
+.env
+*.log  .env.example
+  .gitignore
+  package.json
+  package-lock.json
+  server.js
+  data/
+  routes/
+  services/
+

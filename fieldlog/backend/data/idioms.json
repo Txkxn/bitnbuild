@@ -1,0 +1,23 @@
+{
+  "hi": [
+    {"phrase": "pet mein dard", "literal": "pain in the stomach", "meaning": "stomach pain / abdominal pain", "context": "common complaint in field clinics"},
+    {"phrase": "chakkar aa rahe hain", "literal": "dizziness is coming", "meaning": "feeling dizzy / vertigo", "context": "often heat-related"},
+    {"phrase": "saans nahi aa rahi", "literal": "breath is not coming", "meaning": "shortness of breath / difficulty breathing", "context": "emergency indicator"},
+    {"phrase": "sir bhaari lag raha hai", "literal": "head feels heavy", "meaning": "headache / heaviness in head", "context": "often dehydration or heat exhaustion"}
+  ],
+  "ar": [
+    {"phrase": "نفسي ضيق", "literal": "my breath is tight", "meaning": "shortness of breath / anxiety", "context": "respiratory or panic"},
+    {"phrase": "بطني توجعني", "literal": "my stomach hurts me", "meaning": "stomach pain", "context": "common complaint"},
+    {"phrase": "راسي داير", "literal": "my head is spinning", "meaning": "dizziness / vertigo", "context": "heat-related"}
+  ],
+  "es": [
+    {"phrase": "me duele la cabeza", "literal": "my head hurts", "meaning": "headache", "context": "common complaint"},
+    {"phrase": "no puedo respirar", "literal": "I cannot breathe", "meaning": "difficulty breathing", "context": "emergency indicator"},
+    {"phrase": "me siento mareado", "literal": "I feel dizzy", "meaning": "dizziness", "context": "heat-related"}
+  ],
+  "de": [
+    {"phrase": "mir ist schlecht", "literal": "to me is bad", "meaning": "I feel sick / nauseous", "context": "common complaint"},
+    {"phrase": "ich bin nicht so gut", "literal": "I am not so good", "meaning": "I am unwell / not feeling well", "context": "general malaise"},
+    {"phrase": "mir ist schwindelig", "literal": "to me is dizzy", "meaning": "I feel dizzy", "context": "heat-related"}
+  ]
+}
