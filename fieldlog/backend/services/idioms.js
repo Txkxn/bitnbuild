@@ -18,15 +18,20 @@ export async function findIdioms(text) {
   const idioms = await loadIdioms();
   const lower = text.toLowerCase();
   const matches = [];
+  const seen = new Set();
 
   for (const [lang, entries] of Object.entries(idioms)) {
     for (const entry of entries) {
-      if (lower.includes(entry.phrase.toLowerCase())) {
+      const forms = [entry.phrase, ...(entry.variants || [])];
+      const matched = forms.find((f) => lower.includes(f.toLowerCase()));
+      if (matched && !seen.has(entry.phrase)) {
+        seen.add(entry.phrase);
         matches.push({
           lang,
           phrase: entry.phrase,
+          matched_text: matched,
           meaning: entry.meaning,
-          context: entry.context,
+          context: entry.context
         });
       }
     }
