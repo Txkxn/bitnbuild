@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import normalizeRoute from "./routes/normalize.js";
+import transcribeRoute from "./routes/transcribe.js";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,6 +19,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api", normalizeRoute);
+app.use("/api", transcribeRoute);
 
 app.listen(PORT, () => {
   console.log(`FieldLog backend running on http://localhost:${PORT}`);

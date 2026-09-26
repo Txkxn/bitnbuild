@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "./components/Header.jsx";
-import HomePage from "./pages/HomePage.jsx";
+import BottomNav from "./components/BottomNav.jsx";
 import NewEntryPage from "./pages/NewEntryPage.jsx";
 import RecordPage from "./pages/RecordPage.jsx";
 import HistoryPage from "./pages/HistoryPage.jsx";
@@ -11,7 +11,7 @@ const STORAGE_KEY = "fieldlog_entries";
 const SUNLIGHT_KEY = "fieldlog_sunlight";
 
 export default function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState("new");
   const [result, setResult] = useState(null);
   const [approved, setApproved] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -81,25 +81,18 @@ export default function App() {
     }
   }
 
-  function goHome() {
-    setPage("home");
-    setError(null);
+  function navigate(next) {
+    setPage(next);
+    if (next !== "record") setError(null);
   }
 
   return (
     <div className="app">
-      <Header
-        page={page}
-        onNavigate={setPage}
-        onHome={goHome}
-        sunlight={sunlight}
-        onSunlightToggle={setSunlight}
-      />
+      <Header sunlight={sunlight} onSunlightToggle={setSunlight} />
 
       <main className="app-body">
-        {error && <div className="error-banner">Error: {error}</div>}
+        {error && <div className="error-banner">{error}</div>}
 
-        {page === "home" && <HomePage onNavigate={setPage} />}
         {page === "new" && (
           <NewEntryPage onNormalize={handleNormalize} loading={loading} />
         )}
@@ -108,19 +101,20 @@ export default function App() {
             result={result}
             approved={approved}
             onApprove={handleApprove}
-            onNew={() => setPage("new")}
-            onHome={goHome}
+            onNew={() => navigate("new")}
           />
         )}
         {page === "history" && (
           <HistoryPage
             entries={entries}
             onClear={handleClearHistory}
-            onHome={goHome}
+            onNew={() => navigate("new")}
           />
         )}
-        {page === "panic" && <PanicPage onDismiss={goHome} />}
+        {page === "panic" && <PanicPage onDismiss={() => navigate("new")} />}
       </main>
+
+      {page !== "panic" && <BottomNav page={page} onNavigate={navigate} />}
     </div>
   );
 }

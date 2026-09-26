@@ -1,14 +1,14 @@
 import { useState } from "react";
 
-export default function HistoryPage({ entries, onClear, onHome }) {
+export default function HistoryPage({ entries, onClear, onNew }) {
   const [index, setIndex] = useState(0);
 
   if (!entries || entries.length === 0) {
     return (
-      <div className="history-page">
+      <div className="page">
         <div className="empty-note">No entries yet.</div>
-        <button className="action-btn" onClick={onHome}>
-          Home
+        <button className="action-btn" onClick={onNew}>
+          New Entry
         </button>
       </div>
     );
@@ -22,22 +22,20 @@ export default function HistoryPage({ entries, onClear, onHome }) {
       <div className="history-nav">
         <button
           className="nav-arrow"
-          onClick={() => setIndex((i) => Math.min(i + 1, entries.length - 1))}
-          disabled={safeIndex >= entries.length - 1}
-          title="Older"
+          onClick={() => setIndex((i) => Math.max(i - 1, 0))}
+          disabled={safeIndex <= 0}
         >
-          ← Older
+          ← Newer
         </button>
         <span className="history-counter">
           {safeIndex + 1} / {entries.length}
         </span>
         <button
           className="nav-arrow"
-          onClick={() => setIndex((i) => Math.max(i - 1, 0))}
-          disabled={safeIndex <= 0}
-          title="Newer"
+          onClick={() => setIndex((i) => Math.min(i + 1, entries.length - 1))}
+          disabled={safeIndex >= entries.length - 1}
         >
-          Newer →
+          Older →
         </button>
       </div>
 
@@ -45,7 +43,7 @@ export default function HistoryPage({ entries, onClear, onHome }) {
         <div className="history-time">{entry.timestamp}</div>
         <div className="history-field">
           <div className="field-label">Original Input</div>
-          <div className="field-text field-text-quote">{entry.input}</div>
+          <div className="field-text">{entry.input}</div>
         </div>
         {entry.summary_en && (
           <div className="history-field">
@@ -60,10 +58,7 @@ export default function HistoryPage({ entries, onClear, onHome }) {
 
       <div className="history-footer">
         <button className="action-btn action-btn-secondary" onClick={onClear}>
-          Clear All History
-        </button>
-        <button className="action-btn" onClick={onHome}>
-          Home
+          Clear History
         </button>
       </div>
     </div>
