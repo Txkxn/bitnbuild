@@ -1,13 +1,6 @@
 import { useState } from "react";
 import { useRecorder } from "../hooks/useRecorder.js";
 
-const EXAMPLES = [
-  "Mere ko chakkar aa rahe hain, ich bin nicht so gut, gave ORS, come back in 2 hours",
-  "Patient ko bukhar hai 103, headache, no medication given yet",
-  "Pet dard since last night, keine appetite, gave ORS, follow up in 4 hours",
-  "Unko sugar high lag rahi thi, glucose check 240, insulin not given, come back after lunch"
-];
-
 export default function NewEntryPage({ onNormalize, loading }) {
   const [text, setText] = useState("");
 
@@ -59,21 +52,6 @@ export default function NewEntryPage({ onNormalize, loading }) {
       </div>
 
       {recorder.error && <div className="mic-error">{recorder.error}</div>}
-
-      <div className="example-row">
-        <span className="example-label">Examples</span>
-        {EXAMPLES.map((ex, i) => (
-          <button
-            type="button"
-            key={i}
-            className="example-btn"
-            onClick={() => setText(ex)}
-            disabled={loading}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
 
       <div className="spacer" />
 
