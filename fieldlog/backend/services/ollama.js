@@ -1,3 +1,5 @@
+import { jsonrepair } from "jsonrepair";
+
 const OLLAMA_URL = process.env.OLLAMA_URL || "http://localhost:11434";
 const MODEL_NAME = process.env.MODEL_NAME || "qwen2.5:7b";
 
@@ -42,7 +44,26 @@ const SCHEMA = {
   ]
 };
 
-export async function normalizeText(text) {
+function recoverJson(raw) {
+  if (!raw) return null;
+
+  try { return JSON.parse(raw); } catch {}
+
+  const first = raw.indexOf("{");
+  const last = raw.lastIndexOf("}");
+  const cleaned = first >= 0 && last > first ? raw.slice(first, last + 1) : raw;
+
+  try { return JSON.parse(cleaned); } catch {}
+
+  try { return JSON.parse(jsonrepair(cleaned)); }
+  catch (e) {
+    console.error("[ollama] All recovery failed:", e.message);
+    console.error("[ollama] Raw:", JSON.stringify(raw));
+    throw new Error(`JSON recovery failed: ${e.message}`);
+  }
+}
+
+async function callOllama(text) {
   const started = Date.now();
 
   const response = await fetch(`${OLLAMA_URL}/api/chat`, {
@@ -65,19 +86,37 @@ export async function normalizeText(text) {
     throw new Error(`Ollama error ${response.status}: ${err}`);
   }
 
-  const data = await response.json();
-  const content = data.message?.content || "{}";
-
-  let parsed;
+  const rawText = await response.text();
+  let data;
   try {
-    parsed = JSON.parse(content);
+    data = JSON.parse(rawText);
   } catch (e) {
-    throw new Error(`Model returned invalid JSON: ${content}`);
+    console.error("[ollama] Ollama HTTP not JSON:", rawText.slice(0, 300));
+    throw new Error(`Ollama returned invalid HTTP JSON: ${e.message}`);
   }
 
+  const content = data.message?.content || "{}";
+  const parsed = recoverJson(content);
+
   return {
-    ...parsed,
-    model: MODEL_NAME,
+    parsed,
     duration_ms: Date.now() - started
   };
+}
+
+export async function normalizeText(text) {
+  try {
+    const { parsed, duration_ms } = await callOllama(text);
+    return { ...parsed, model: MODEL_NAME, duration_ms };
+  } catch (firstError) {
+    console.warn("[ollama] First attempt failed, retrying once:", firstError.message);
+    try {
+      const { parsed, duration_ms } = await callOllama(text);
+      return { ...parsed, model: MODEL_NAME, duration_ms };
+    } catch (secondError) {
+      throw new Error(
+        `Extraction failed twice. First: ${firstError.message}. Second: ${secondError.message}`
+      );
+    }
+  }
 }

@@ -20,6 +20,6 @@
   "de": [
     {"phrase": "mir ist schlecht", "variants": [], "literal": "to me is bad", "meaning": "I feel sick / nauseous", "context": "common complaint"},
     {"phrase": "ich bin nicht so gut", "variants": [], "literal": "I am not so good", "meaning": "I am unwell / not feeling well", "context": "general malaise"},
-    {"phrase": "mir ist schwindelig", "variants": [], "literal": "to me is dizzy", "meaning": "I feel dizzy", "context": "heat-related"},
+    {"phrase": "mir ist schwindelig", "variants": [], "literal": "to me is dizzy", "meaning": "I feel dizzy", "context": "heat-related"}
   ]
 }
