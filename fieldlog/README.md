@@ -52,19 +52,60 @@ Mere ko chakkar aa rahe hain, ich bin nicht so gut, gave ORS, come back in 2 hou
     { "lang": "de", "phrase": "ich bin nicht so gut", "meaning": "I am unwell / not feeling well" }
   ]
 }
+```
+---
+# FieldLog Setup
 
-┌──────────────────┐
-│  React frontend  │  Blocky UI, sunlight mode, log history
-└────────┬─────────┘
-         │ POST /api/normalize
-         ▼
-┌──────────────────┐
-│ Express backend  │  Extraction orchestration, idiom lookup
-└────────┬─────────┘
-         │
-         ├──► Ollama (localhost:11434, qwen2.5:7b)
-         │    Structured JSON extraction via schema enforcement
-         │
-         └──► Idiom table (data/idioms.json)
-              Curated field idioms in Hindi, Arabic, Spanish, German
+### 1. Clone the repo
 
+```bash
+git clone https://github.com/Txkxn/bitnbuild.git
+cd bitnbuild/fieldlog
+```
+
+### 2. Install prerequisites
+
+Install:
+
+* Node.js + npm
+* Python 3
+* Ollama
+* Whisper
+
+Then install Qwen:
+
+```bash
+ollama pull qwen3
+```
+
+### 3. Start the app
+
+Open **3 terminals**.
+
+**Frontend**
+
+```bash
+cd fieldlog/frontend
+npm install
+npm run dev
+```
+
+**Backend**
+
+```bash
+cd fieldlog/backend
+npm install
+npm run dev
+```
+
+**Whisper**
+
+```bash
+cd fieldlog/whisper
+pip install -r requirements.txt
+python server.py
+```
+
+Make sure **Ollama is running** in the background.
+
+You should now have the frontend, backend, Whisper, and Ollama running simultaneously.
